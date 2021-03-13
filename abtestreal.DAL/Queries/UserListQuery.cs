@@ -20,8 +20,8 @@ namespace abtestreal.DAL.Queries
             var users = await _dbContext.Users.AsNoTracking().Select(u => new UserResponse
             {
                 Id = u.Id,
-                Registered = u.Registered,
-                LastSeen = u.LastSeen
+                Registered = u.Registered.Date,
+                LastSeen = u.LastSeen.Date,
             }).OrderBy(u => u.Id).ToArrayAsync();
 
             return new ListResponse<UserResponse>
