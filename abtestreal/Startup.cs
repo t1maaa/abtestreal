@@ -1,3 +1,5 @@
+using abtestreal.DAL.Commands;
+using abtestreal.DAL.Queries;
 using abtestreal.Db;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -31,6 +33,8 @@ namespace abtestreal
             {
                 options.UseNpgsql(connectionString);
             });
+            
+            RegisterCommandsAndQueries(services);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -69,6 +73,16 @@ namespace abtestreal
                     spa.UseReactDevelopmentServer(npmScript: "start");
                 }
             });
+        }
+
+        private void RegisterCommandsAndQueries(IServiceCollection services)
+        {
+            services.AddScoped<ICreateUserBulkCommand, CreateUserBulkCommand>();
+            services.AddScoped<IUpdateUserBulkCommand, UpdateUserBulkCommand>();
+            services.AddScoped<IDeleteUserBulkCommand, DeleteUserBulkCommand>();
+            services.AddScoped<IUserListQuery, UserListQuery>();
+            services.AddScoped<IUsersLifetimeQuery, UsersLifetimeQuery>();
+            services.AddScoped<IUsersRollingRetention, UsersRollingRetention>();
         }
     }
 }

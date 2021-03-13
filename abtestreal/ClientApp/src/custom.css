@@ -16,3 +16,37 @@ code {
 input.new-user {
   margin: 10px;
 }
+
+.btn {
+  width: 189px;
+  height: 38px;
+  color: #fff;
+  background: #4A9DFF;
+  border-radius: 10px;
+}
+
+.btn-add {
+}
+
+.btn-td {
+  display:inline-block;
+  width: 80px;
+  height: 40px;
+  margin: 5px;
+}
+
+.new-row {
+  display: flex;
+  flex-direction: row;
+  align-items: baseline;
+}
+
+tr td {
+  width: 1%;
+  white-space:nowrap;
+  border-color: white;
+}
+
+tr {
+  border-color: white;
+}

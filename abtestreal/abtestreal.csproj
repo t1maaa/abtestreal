@@ -26,6 +26,7 @@
     </ItemGroup>
 
     <ItemGroup>
+      <ProjectReference Include="..\abtestreal.DAL\abtestreal.DAL.csproj" />
       <ProjectReference Include="..\abtestreal.Db\abtestreal.Db.csproj" />
     </ItemGroup>
 

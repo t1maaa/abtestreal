@@ -1,14 +1,11 @@
 ﻿import React, { Component } from "react";
-import { Row } from './Table/Row';
+import { TableRow } from './TableRow';
 export class Table extends Component {
 
     constructor(props) {
         super(props);
         this.state = {
             users: [],
-            added: [],
-            removed: [],
-            updated: [],
             newUserId:'',
             newUserRegistered:'',
             newUserLastSeen:'',
@@ -19,36 +16,44 @@ export class Table extends Component {
         this.renderInputLine = this.renderInputLine.bind(this);
         this.handleRemove = this.handleRemove.bind(this);
         this.renderTable = this.renderTable.bind(this);
+        this.saveToDB = this.saveToDB.bind(this);
+        this.handleTableRowChanged = this.handleTableRowChanged.bind(this);
+        
     }
     
     componentDidMount() {
-        this.fetchData();
+       setTimeout( () => {
+           this.setState({users: [...this.props.fetchedUsers]});
+       }, 1000)
+        
     }
-    
+
     render() {
         let input = this.renderInputLine();
-        let table = this.state.loading ? <p><em>Loading...</em></p> : this.renderTable(this.state.users)
+        let table = this.renderTable(this.state.users)
+        let saveBtn = <button className="btn btn-primary" onClick={this.saveToDB}>Save to Db</button>
         return <div>
             { table }
-            <br/>
-            { input }</div>
-    }
+            { input }
+            { saveBtn }
+        </div>
+    }//
+    
     renderTable(users) {
         return(
-            <table width="100%" cellSpacing="0" border="1">
+            <table cellSpacing="0" border="1">
                 <thead>
                 <tr>
                     <th>Id</th>
                     <th>Registered</th>
                     <th>Last seen</th>
                     <th> </th>
-                    <th> </th>
                 </tr>
                 </thead>
                 <tbody>
                 {users.map(user =>
                     <tr key={user.id}>
-                        <Row user={user} remove={this.handleRemove}/>
+                        <TableRow user={user} handleTableRowChanged={this.handleTableRowChanged} remove={this.handleRemove}/>
                     </tr>                
                 )}
                 </tbody>
@@ -57,11 +62,12 @@ export class Table extends Component {
     }
     renderInputLine() {
         return(
-            <div>
-                <form width="100%">
+            <div className="new-row">
+                <form>
                     <input className="new-user"
                            type="number"
                         name="newUserId"
+                           placeholder="id"
                         onChange={this.handleChange}
                         value={this.state.newUserId}
                     />
@@ -78,10 +84,7 @@ export class Table extends Component {
                         value={this.state.newUserLastSeen}
                     />
                 </form>
-                <button onClick={this.handleSubmit}>Add</button>
-                <br/>
-                <br/>
-                <button>Save to Db</button>
+                <button className="btn btn-add" onClick={this.handleSubmit}>Add</button>
             </div>
         )
     }
@@ -91,8 +94,13 @@ export class Table extends Component {
     }
     
    handleRemove(id) {
-       this.setState(state => ({users: this.state.users.filter(u => u.id !== id)})) 
+       this.setState(state => ({users: this.state.users.filter(u => u.id !== id)}))
     }
+    
+    handleTableRowChanged(user) {        
+        let updatedUsers = this.state.users.map(u => (u.id === user.id) ? user : u);
+        this.setState(state => ({users: updatedUsers}));        
+}
     
     handleSubmit(e) {
         e.preventDefault();
@@ -107,16 +115,17 @@ export class Table extends Component {
         }
         
         this.setState(state => ({users: state.users.concat(newUser)}))
-        this.setState( state => ({added: state.added.concat(newUser)}))
         this.setState({newUserId:'', newUserRegistered:'', newUserLastSeen:''})
     }
-
-    async fetchData() {
-        const response = await fetch('api/users');
-        const rawData = await response.json();
-        let data = [];
-        rawData.forEach(u => data.push({id: u.id, registered: u.registered.split('T')[0], lastSeen: u.lastSeen.split('T')[0]}))
-        this.setState({ users: data, loading: false });
-    }
-
+    
+    saveToDB() {      
+        
+        let added = this.state.users.filter(u => !this.props.fetchedUsers.some(fu => u.id === fu.id));
+        let removed = this.props.fetchedUsers.filter(u => !this.state.users.some(fu => u.id === fu.id));
+        let notUpdated = this.props.fetchedUsers.filter(u => this.state.users.includes(u));
+        let updated = this.state.users.filter(u => this.props.fetchedUsers.some(fu => u.id === fu.id)).filter(u => !notUpdated.some(nu => nu.id === u.id));
+        
+       this.props.onSave({added, updated, removed});
+                
+    }    
 }
