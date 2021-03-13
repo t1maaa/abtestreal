@@ -38,6 +38,11 @@ namespace abtestreal.DAL.Commands
             try
             {
                 _context.Users.AttachRange(users);
+                foreach (var user in users)
+                {
+                    _context.Entry(user).State = EntityState.Modified;
+                }
+                
                 await _context.SaveChangesAsync();
             }
             catch (Exception e)
