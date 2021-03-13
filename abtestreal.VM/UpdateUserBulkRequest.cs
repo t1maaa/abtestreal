@@ -2,6 +2,6 @@
 {
     public class UpdateUserBulkRequest
     {
-        public UserResponse[] Users { get; set; }
+        public UserRequest[] Users { get; set; }
     }
 }

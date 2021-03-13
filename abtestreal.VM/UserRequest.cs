@@ -1,13 +1,17 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
-using System.Runtime.Serialization;
 
 namespace abtestreal.VM
 {
-    public class UserResponse
+    public class UserRequest
     {
+        [Required]
         public int Id { get; set; }
+        
+        [DataType(DataType.Date)]
         public DateTime Registered { get; set; }
+        
+        [DataType(DataType.Date)]
         public DateTime LastSeen { get; set; }
     }
 }
