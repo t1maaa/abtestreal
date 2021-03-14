@@ -32,12 +32,14 @@ export class Table extends Component {
         let input = this.renderInputLine();
         let table = this.renderTable(this.state.users)
         let saveBtn = <button className="btn btn-primary" onClick={this.saveToDB}>Save to Db</button>
-        return <div>
+        return (<>
             { table }
-            { input }
-            { saveBtn }
-        </div>
-    }//
+            <div className="container input">
+                { input }
+                { saveBtn }
+            </div>            
+            </>)
+    }
     
     renderTable(users) {
         return(

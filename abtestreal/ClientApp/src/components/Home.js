@@ -2,7 +2,6 @@
 import { Table } from './Table'
 import {Bar, BarChart, Label, XAxis, YAxis, Tooltip, ResponsiveContainer, CartesianGrid} from "recharts";
 
-
 export class Home extends Component {    
     constructor(props) {
         super(props);
@@ -32,14 +31,16 @@ export class Home extends Component {
                 
                 <BarChart
                           data={this.state.chartData}
-                          margin={{top: 5, right: 30, left: 20, bottom: 5}}
-                >
+                          margin={{top: 5, right: 30, left: 20, bottom: 5}}>
                     <CartesianGrid strokeDasharray="3 3" />
-                    <XAxis dataKey="days" label="Days"/>
+                    <XAxis dataKey="days" label="Days">
+                        <Label value="Days" offset={0} position="centerBottom"/>
+                    </XAxis>
                     <YAxis interval={1}>
                         <Label value="Users" angle={-90} position="insideLeft"/>
                     </YAxis>
-                    <Bar  dataKey="count" fill="#82ca9d"/>
+                    <Tooltip content={<CustomTooltip/>}/>
+                    <Bar  dataKey="count" fill="#82ca9d" />
                 </BarChart>
             </ResponsiveContainer> 
         return(
@@ -73,7 +74,8 @@ export class Home extends Component {
         if(data.updated.length > 0) {
            await this.sendData("put", {users: data.updated});
         }
-      this.fetchData();
+        setTimeout( () => this.fetchData(), 500)
+      
     }
     
     sendData(method, data) {
@@ -103,4 +105,16 @@ export class Home extends Component {
             } else { window.alert("Error during get rolling retention: " + res.statusText)}
         })
     }
+}
+
+const CustomTooltip = ({active, payload, label}) => {
+    if(active && payload && payload.length) {
+        return (
+            <div className="custom-tooltip">
+                <p className="count">{`Users : ${payload[0].value}`}</p>
+                <p className="label">{`Days: : ${label}`}</p>
+            </div>
+        )
+    }
+    return null;
 }
