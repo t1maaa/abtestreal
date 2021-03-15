@@ -1,8 +1,7 @@
 ﻿namespace abtestreal.VM
 {
-    public class ListResponse<TItem>
+    public class ListRequest<TItem>
     {
         public TItem[] Items { get; set; }
-        public int Count => Items.Length;
     }
 }

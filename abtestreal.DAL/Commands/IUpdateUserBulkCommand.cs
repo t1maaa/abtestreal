@@ -5,6 +5,6 @@ namespace abtestreal.DAL.Commands
 {
     public interface IUpdateUserBulkCommand
     {
-        Task<UpdateUserBulkResponse> ExecuteAsync(UpdateUserBulkRequest request);
+        Task<ListResponse<int>> ExecuteAsync(ListRequest<UserRequest> request);
     }
 }

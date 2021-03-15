@@ -16,16 +16,15 @@ namespace abtestreal.DAL.Commands
             _context = context;
         }
         
-        public async Task<DeleteUserBulkResponse> ExecuteAsync(DeleteUserBulkRequest request)
+        public async Task<ListResponse<int>> ExecuteAsync(ListRequest<UserRequest> request)
         {
-            if (request.Users.Length == 0)
-                return new DeleteUserBulkResponse
+            if (request.Items.Length == 0)
+                return new ListResponse<int>()
                 {
-                    Count = 0,
-                    Ids = Array.Empty<int>()
+                    Items = Array.Empty<int>()
                 };
 
-            var users = request.Users.Select(u => new User
+            var users = request.Items.Select(u => new User
             {
                 Id = u.Id
             }).ToList();
@@ -41,10 +40,9 @@ namespace abtestreal.DAL.Commands
                 throw;
             }
             
-            return new DeleteUserBulkResponse
+            return new ListResponse<int>()
             {
-                Ids = users.Select(u => u.Id).ToArray(),
-                Count = users.Count
+                Items = users.Select(u => u.Id).ToArray(),
             };
         }
     }

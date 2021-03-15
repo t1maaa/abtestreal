@@ -64,15 +64,15 @@ export class Home extends Component {
    async saveToDb(data) {
         this.setState({loading: true});
         if(data.removed.length > 0) {
-           await this.sendData("delete", {users: data.removed});
+           await this.sendData("delete", {items: data.removed});
         }
         
         if(data.added.length > 0) {
-           await this.sendData("post", {users: data.added});
+           await this.sendData("post", {items: data.added});
         }
         
         if(data.updated.length > 0) {
-           await this.sendData("put", {users: data.updated});
+           await this.sendData("put", {items: data.updated});
         }
         setTimeout( () => this.fetchData(), 500)
       

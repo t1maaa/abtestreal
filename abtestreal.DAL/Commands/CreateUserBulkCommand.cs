@@ -16,15 +16,14 @@ namespace abtestreal.DAL.Commands
             _dbContext = context;
         }
 
-        public async Task<CreateUserBulkResponse> ExecuteAsync(CreateUserBulkRequest request)
+        public async Task<ListResponse<int>> ExecuteAsync(ListRequest<UserRequest> request)
         {
-            if (request.Users.Length == 0)
-                return new CreateUserBulkResponse
+            if (request.Items.Length == 0)
+                return new ListResponse<int>()
                 {
-                    Count = 0,
-                    Ids = System.Array.Empty<int>()
+                    Items = Array.Empty<int>()
                 };
-            var users = request.Users.Select(user => new User {Id = user.Id, Registered = user.Registered, LastSeen = user.LastSeen}).ToList();
+            var users = request.Items.Select(user => new User {Id = user.Id, Registered = user.Registered, LastSeen = user.LastSeen}).ToList();
 
             try
             {
@@ -37,10 +36,9 @@ namespace abtestreal.DAL.Commands
                 throw;
             }
             
-            return new CreateUserBulkResponse
+            return new ListResponse<int>()
            {
-               Count = users.Count,
-               Ids = users.Select(u => u.Id).ToArray()
+               Items = users.Select(u => u.Id).ToArray()
            };
         }
     }

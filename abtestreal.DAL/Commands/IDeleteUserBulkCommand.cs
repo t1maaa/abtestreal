@@ -5,6 +5,6 @@ namespace abtestreal.DAL.Commands
 {
     public interface IDeleteUserBulkCommand
     {
-        Task<DeleteUserBulkResponse> ExecuteAsync(DeleteUserBulkRequest request);
+        Task<ListResponse<int>> ExecuteAsync(ListRequest<UserRequest> request);
     }
 }

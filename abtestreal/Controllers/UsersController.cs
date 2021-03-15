@@ -20,7 +20,7 @@ namespace abtestreal.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Post([FromBody]CreateUserBulkRequest request, [FromServices]ICreateUserBulkCommand command)
+        public async Task<IActionResult> Post([FromBody]ListRequest<UserRequest> request, [FromServices]ICreateUserBulkCommand command)
         {
             if (!ModelState.IsValid) return BadRequest(ModelState);
             
@@ -29,7 +29,7 @@ namespace abtestreal.Controllers
         }
 
         [HttpPut]
-        public async Task<IActionResult> Update([FromBody]UpdateUserBulkRequest request, [FromServices]IUpdateUserBulkCommand command)
+        public async Task<IActionResult> Update([FromBody]ListRequest<UserRequest> request, [FromServices]IUpdateUserBulkCommand command)
         {
             if (!ModelState.IsValid) return BadRequest(ModelState);
             
@@ -38,7 +38,7 @@ namespace abtestreal.Controllers
         }
 
         [HttpDelete]
-        public async Task<IActionResult> Delete([FromBody]DeleteUserBulkRequest request, [FromServices]IDeleteUserBulkCommand command)
+        public async Task<IActionResult> Delete([FromBody]ListRequest<UserRequest> request, [FromServices]IDeleteUserBulkCommand command)
         {
             if (!ModelState.IsValid) return BadRequest(ModelState);
             

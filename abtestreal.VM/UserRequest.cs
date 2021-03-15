@@ -4,19 +4,18 @@ using System.ComponentModel.DataAnnotations;
 
 namespace abtestreal.VM
 {
-    public class UserRequest : IValidatableObject
+    public class UserRequest : UserRequestBase, IValidatableObject
     {
-        [Required]
-        public int Id { get; set; }
-
         [DataType(DataType.Date)]
         public DateTime Registered { get; set; }
 
         [DataType(DataType.Date)]
         public DateTime LastSeen { get; set; }
 
-        public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
+        public new IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
         {
+            yield return ValidateId(validationContext);
+            
             if (Registered > LastSeen)
             {
                 yield return new ValidationResult(
