@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Globalization;
-using System.Linq;
 using System.Threading.Tasks;
 using abtestreal.Db;
 using abtestreal.VM;
@@ -19,12 +17,12 @@ namespace abtestreal.DAL.Queries
 
         public async Task<UsersRollingRetentionResponse> RunAsync(int days)
         {
-            var usersLastSeenXdaysOrLater = _context.Users.Count(u => (u.LastSeen - u.Registered).Days >= days);
+            var usersLastSeenXdaysOrLater = await _context.Users.CountAsync(u => (u.LastSeen - u.Registered).Days >= days);
           //  if (usersLastSeenXdaysOrLater == 0)
           //  {
           //      return $"Count of returned users in {days} days or later is 0";
           //  }
-            var usersAppInstalledXdaysOrEarlier = _context.Users.Count(u => (DateTime.Now - u.Registered).Days >= days);
+            var usersAppInstalledXdaysOrEarlier = await _context.Users.CountAsync(u => (DateTime.Now - u.Registered).Days >= days);
             
             if(usersAppInstalledXdaysOrEarlier == 0)
             {

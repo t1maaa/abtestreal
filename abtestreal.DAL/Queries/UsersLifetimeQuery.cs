@@ -2,7 +2,6 @@
 using System.Threading.Tasks;
 using abtestreal.Db;
 using abtestreal.VM;
-using Microsoft.EntityFrameworkCore;
 
 namespace abtestreal.DAL.Queries
 {
