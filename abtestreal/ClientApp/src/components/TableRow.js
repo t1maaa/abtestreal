@@ -37,8 +37,11 @@ export class TableRow extends Component {
         if(!this.state.editing)
             this.setState({editing: true});
         else {
-            this.setState({editing: false});
-            this.props.handleTableRowChanged({id: this.state.id, registered: this.state.registered, lastSeen: this.state.lastSeen})
+            if(this.state.registered <= this.state.lastSeen)
+            {
+                this.setState({editing: false});
+                this.props.handleTableRowChanged({id: this.state.id, registered: this.state.registered, lastSeen: this.state.lastSeen})
+            }            
         }
     }
 }

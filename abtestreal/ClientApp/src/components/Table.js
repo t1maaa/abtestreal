@@ -110,6 +110,7 @@ export class Table extends Component {
         if(isNaN(id)) return; 
         if(this.state.users.filter(u => u.id === id).length > 0) return;
         if(this.state.newUserRegistered.length === 0 || this.state.newUserLastSeen === 0) return;
+        if(this.state.newUserRegistered > this.state.newUserLastSeen) return;
         let newUser = {
             id: id,
             registered: this.state.newUserRegistered,
